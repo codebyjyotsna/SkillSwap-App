@@ -24,19 +24,25 @@ mongoose
 const userRoutes = require("./routes/userRoutes");
 const skillRoutes = require("./routes/skillRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const calendarRoutes = require("./routes/calendarRoutes");
 
 app.use("/api/users", userRoutes);
 app.use("/api/skills", skillRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/calendar", calendarRoutes);
 
-// Socket.IO for real-time chat
+// Real-time Chat with Socket.IO
 io.on("connection", (socket) => {
   console.log("New client connected");
 
+  // Listen for messages
   socket.on("sendMessage", (message) => {
-    io.emit("receiveMessage", message);
+    io.emit("receiveMessage", message); // Broadcast message to all connected clients
   });
 
+  // Handle client disconnect
   socket.on("disconnect", () => {
     console.log("Client disconnected");
   });
